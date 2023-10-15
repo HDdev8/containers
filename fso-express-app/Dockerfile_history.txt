@@ -1,0 +1,68 @@
+### version 1:
+# —Use the node:18 as the base for the image
+# —Include the index.js inside the image
+# —When running container from the image, use Node to execute the index.js file.
+
+# FROM node:18
+# WORKDIR /usr/src/app
+# COPY ./index.js ./index.js
+# CMD node index.js
+
+### version 2
+# —Use node:18 as base
+# —Set working directory so as not to interfere with the contents of the base image
+# —Copy ALL of the files in this directory to the image
+# —Start express app with DEBUG=fso-express-app:* npm start
+
+# FROM node:18
+# WORKDIR /usr/src/app
+# COPY . .
+# CMD DEBUG=fso-express-app:* npm start
+
+### version 3: copy express app directory from computer to container, omit copy of node_modules using .dockerignore file,install dependencies IN container, run express app ###
+
+# FROM node:18
+# WORKDIR /usr/src/app
+# COPY . .
+# RUN npm install
+# CMD DEBUG=fso-express-app:* npm start
+
+### version 4: delete node_modules before installation, and use package-lock to install specific dependency versions ###
+
+# FROM node:18
+# WORKDIR /usr/src/app
+# COPY . .
+# RUN npm ci
+# CMD DEBUG=fso-express-app:* npm start
+
+### version 5: set env variables ###
+
+# FROM node:18
+# WORKDIR /usr/src/app
+# COPY . .
+# RUN npm ci
+# ENV DEBUG=fso-express-app:*
+# CMD npm start
+
+### version 6: run as user with fewer priviledges instead of as root ###
+
+# FROM node:18
+# WORKDIR /usr/src/app
+# COPY --chown=node:node . .
+# RUN npm ci
+# ENV DEBUG=fso-express-app:*
+# USER node
+# CMD npm start
+
+FROM node:18
+
+WORKDIR /usr/src/app
+
+COPY --chown=node:node . .
+
+RUN npm ci
+
+ENV DEBUG=fso-express-app:*
+
+USER node
+CMD npm start
