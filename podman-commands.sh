@@ -1,0 +1,108 @@
+# https://podman-desktop.io/docs/onboarding-for-containers/installing-podman
+
+# Initialize a Podman machine
+podman machine init
+
+# Check the socket Podman is using
+podman machine inspect --format '{{.ConnectionInfo.PodmanSocket.Path}}'
+
+# Set the DOCKER_HOST environment variable to the Podman socket location. This enables the use of Docker commands with Podman
+export DOCKER_HOST='unix:///$HOME/.local/share/containers/podman/machine/qemu/podman.sock'
+
+# Start Podman machine
+podman machine start
+
+# Stop Podman machine
+podman machine stop
+
+### Dockerfile ###
+# Build image from Dockerfile in directory
+# name image: -t <image_name>
+# podman build -t <image_name> .
+podman build -t fso-hello-world .
+
+# Run container from image
+# podman run <image-name>
+podman run fso-hello-world
+
+# Build image from Dockerfile in directory
+# podman build -t <image_name> .
+podman build -t express-server .
+
+# Run container from image, connect computer port to container express app port
+# podman run -p <host-port>:<application-port> <image-name>
+podman run -p 3123:3000 express-server
+
+# List running containers
+podman container ls
+
+# Stop a running container
+# podman kill <container_name>
+podman kill great_kalam
+
+# Delete a running container
+# podman container rm <container_name>
+podman container rm great_kalam
+
+### docker-compose.yml ###
+# Build and run image from docker-compose.yml
+podman compose up
+
+# Rebuild image from docker-compose.yml
+podman compose up --build
+
+# Run the application in the background
+# -d for detached
+podman compose up -d
+
+# Close application
+podman compose down
+
+# Create an Express server that runs in port 3000, then run it:
+podman build -t express-server . && podman run -p 3000:3000 express-server
+# By creating docker-compose.yml to go with the Dockerfile, instead of running the code above^, simply run:
+podman compose up
+
+# Pull hello-world image from Docker Hub and run it
+podman run index.docker.io/library/hello-world:latest
+
+# Pull hello-world image from https://quay.io/ and run it
+podman run hello-world
+
+# the flag -d runs container in detached mode (the terminal won't show that it's running)
+podman container run -d docker.io/library/nginx
+
+# restart with the -p flag to have our browser access it
+podman container run -d -p 8080:80 docker.io/library/nginx
+
+# The docker exec command runs a new command in a running container
+podman exec
+
+# the flags -it will ensure that we can interact with the container
+podman exec -it <container_name> bash
+
+# Entering the container and using mongosh
+podman exec -it todo-backend-mongo-1 mongosh -u dockeruser -p dockerpassword
+
+# show databases with mongosh
+show dbs
+
+# use the correct database with mongosh
+use docker_mongo_database
+
+# show collections with mongosh
+show collections
+
+# access the data in a collection with mongosh
+db.todos.find({})
+
+# Creating a todo using mongosh
+db.todos.insertOne(
+  {
+    text: "Increase the number of todos",
+    done: false,
+  }
+)
+
+# leave container mongosh
+quit
