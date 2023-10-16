@@ -3,17 +3,25 @@ version: '3.8'
 services:
   mongo:
     image: docker.io/library/mongo
+    # userns_mode: "keep-id"          # 1 user permissions needed for bind mount
     ports:
       - 3456:27017
     env_file:
       - .env
     volumes:
       - ./mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
-      # - mongo_data:/data/db
+      # - ./mongo_data:/data/db       # 1 bind mount
+      # - mongo_data:/data/db         # 2 named volume
   redis:
     image: docker.io/library/redis
+    # userns_mode: "keep-id"         # 1 user permissions needed for bind mount
     ports:
       - 6379:6379
-# volumes:
+    # command: ['redis-server', '--appendonly', 'yes'] # Overwrite the CMD, enabling persistent storage
+    # volumes:
+      # - ./redis_data:/data         # 1 bind mount
+      # - redis_data:/data           # 2 named volume
+# volumes:                           # 2 named volumes
 #   mongo_data:
+#   redis_data:
 
