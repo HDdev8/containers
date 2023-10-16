@@ -1,4 +1,4 @@
-const {client} = require("../redis");
+const {client} = require("../redis/db");
 
 const countRequests = async (req, res, next) => {
   if (req.method === "POST" && res.statusCode === 200) {

@@ -1,16 +1,10 @@
-const {
-  MONGO_INITDB_ROOT_USERNAME,
-  MONGO_INITDB_ROOT_PASSWORD,
-  MONGO_INITDB_DATABASE,
-} = require("../util/config");
-
 db.createUser({
-  user: MONGO_INITDB_ROOT_USERNAME,
-  pwd: MONGO_INITDB_ROOT_PASSWORD,
+  user: process.env.MONGO_INITDB_ROOT_USERNAME,
+  pwd: process.env.MONGO_INITDB_ROOT_PASSWORD,
   roles: [
     {
       role: "dbOwner",
-      db: MONGO_INITDB_DATABASE,
+      db: process.env.MONGO_INITDB_DATABASE,
     },
   ],
 });

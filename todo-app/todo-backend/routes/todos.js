@@ -1,5 +1,6 @@
 const express = require("express");
-const {Todo} = require("../mongo");
+const {Todo} = require("../mongo/db");
+
 const router = express.Router();
 
 /* GET todos listing. */

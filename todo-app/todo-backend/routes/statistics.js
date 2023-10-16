@@ -1,6 +1,7 @@
 const express = require("express");
+const {client} = require("../redis/db");
+
 const router = express.Router();
-const {client} = require("../redis");
 
 /* GET todos listing. */
 router.get("/", async (req, res) => {
