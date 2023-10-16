@@ -3,7 +3,7 @@ const {client} = require("../redis/db");
 
 const router = express.Router();
 
-/* GET todos listing. */
+/* GET todos_added count. */
 router.get("/", async (req, res) => {
   try {
     let todos_added = await client.get("todos_added");
