@@ -1,2 +1,3 @@
-# containers
-Learning containerization with Podman, Node.js, Express.js, Redis, and shell scripting
+# Containers
+
+Practicing containerization with Podman, React, Node.js, Express.js, MongoDB, Redis, and shell scripting
